@@ -1,4 +1,11 @@
-モンテカルロ木探索と感情モデルを用いた2D格闘ゲームNPCの研究成果物
+
+＃モンテカルロ木探索と感情モデルを用いた2D格闘ゲームNPCの研究成果物
+
+<p align="center">
+  <img width="854" height="480" alt="MctsAi23iEmotion vs MctsAi23iEmotion" src="https://github.com/user-attachments/assets/905557ca-5949-4e59-b266-990172470214" />
+</p>
+
+
 MCTS-EmotionNPC
 概要
 
