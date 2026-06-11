@@ -196,3 +196,41 @@ LLMとの連携
 感情に応じた戦術変化
 行動の多様性向上
 を実現した。
+
+・動作環境：本システムの稼働および開発は、以下の環境で検証されています。環境の差異による動作不良を防ぐため、指定のバージョンをご利用ください。
+OS: Windows 11   Java: JDK 24   開発環境: Visual Studio Code   ベースシステム: * FightingICE-master（GitHub版）
+依存データ: DareFightingICE-7.0（Release版）   
+
+・環境構築と実行手順 (Setup & Usage) 
+ベース環境の準備本AIはFightingICE-master上で動作しますが、リソースデータは旧版から移行する必要があります。
+DareFightingICE-7.0（Release版）をダウンロードし、解凍します。  解凍した旧版フォルダ内にある data フォルダをコピーします。  
+新版であるFightingICE-masterのディレクトリ直下に、コピーしたdataフォルダを配置します。
+AIの配置とコンパイル本リポジトリのAIファイル（例：MctsAi23iEmotion.java）を src/ai フォルダ内に配置します。  
+コマンドプロンプトを起動し、以下のコマンドでコンパイルを実行します 。  
+Bashjavac -encoding UTF-8 -cp "..\lib\*" ..\src\ai\MctsAi23iEmotion.java
+
+起動スクリプトの構成安定した起動のため、FightingICE-master フォルダ内の run.bat を以下の内容に書き換えて保存してください。 
+
+DOS@echo off
+cd /d "%~dp0"
+echo 実験を開始します...
+echo Player 1: MctsAi23iEmotion
+echo Player 2: MctsAi23i
+echo HP Limit: 1000
+java -cp "./lib/lwjgl/*;./lib/*;./bin" -Djava.library.path="./lib/lwjgl/natives/windows/amd64" Main --a1 MctsAi23iEmotion --a2 MctsAi23i --limithp 1000 1000
+pause
+(参考: 上記のスクリプトは、Player1に作成したAI、Player2にベースAIを設定し、HP上限を1000にして起動する構成です。)   
+
+システムの起動編集した run.bat をダブルクリック、またはコマンドプロンプトから実行します。  正常に起動するとコンソール画面が表示され、FIGHT や REPLAY などのメニューが確認できます。  
+メニューはキーボードで操作します（矢印キーで選択、Zキーで決定、ESCキーで戻る）。  FIGHT → PLAY の順に選択すると、ローディング画面を経て対戦が開始されます。  
+
+・運用・チューニング設定 (Configuration & Tuning)検証や実験の目的に合わせて、以下のパラメータを調整することが可能です。
+HPの変更: run.bat 内の --limithp 1000 1000 の数値を書き換えることで、任意のHPに変更可能です。 
+ゲームタイマー（フレーム数）の変更:src/setting/GameSetting.java 内の public static int ROUND_FRAME_NUMBER = ; の値を変更してください。
+※本システムは1秒＝60フレームとして管理されています。 
+対戦カード・操作の変更:
+起動後のメニュー画面にて、1P/2Pの操作（NPC変更）、キャラクター（例: ZEN）、対戦回数（Repeat Count）を矢印キーで変更できます。  
+トラブルシューティング (Troubleshooting)起動時や実行時に問題が発生した場合は、以下を確認してください。
+コンソール画面が表示されない / PLAYを押してもゲームが始まらない:data フォルダが正しい階層（FightingICE-master の直下）に配置されているか確認してください。 
+Javaのバージョンが要件（JDK 24）を満たしているか確認してください。  
+作成したAIが認識されない・エラーになる:AIファイルの package 名が正しく設定されているか（package ai; など）を確認してください。
